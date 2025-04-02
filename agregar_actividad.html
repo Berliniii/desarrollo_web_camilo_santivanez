@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="author" content="Camilo Santivañez"/>
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0"/>
+    </head>
+    <body>
+        <h1>Informar Actividad</h1>
+        <div class="main_container">
+            <div id="val-box" hidden>
+                <h2 id="val-msg"></h2>
+                <ul id="val-list"></ul>
+            </div>
+            <form name="informar_actividad" method="post" enctype="multipart/form-data">
+                
+                <h2>¿Dónde?</h2>
+                
+                <label for="select-region">Región</label>
+                <select name="select-region", id="select-region" required>
+                    <option value="">Seleccione una Región</option>
+                </select><br>
+
+                <label for="select-comuna">Comuna</label>
+                <select name="select-comuna", id="select-comuna" required>
+                    <option value="">Seleccione una Comuna</option>
+                </select><br>
+
+                <label for="sector">Sector</label>
+                <input type="text" name="sector" id="sector" maxlength="100"><br>
+
+            </form>
+
+        </div>
+
+    </body>
+</html>
