@@ -59,6 +59,38 @@
                 
                 <hr>
 
+                <h2>¿Cuándo y de qué trata?</h2>
+
+                <label for="dia-hora-inicio">Dia hora inicio</label>
+                <input type="datetime-local" name="nombre_organizador" id="nombre_organizador" required><br>
+
+                <label for="dia-hora-termino">Dia hora término</label>
+                <input type="datetime-local" name="dia-hora-termino" id="dia-hora-termino" required><br>
+
+                <label for="descripcion-actividad">Descripción</label><br>
+                <textarea name="descripcion-actividad" id="descripcion-actividad" rows="10" cols="50"></textarea><br>
+
+                <label for="tema">Tema</label><br>
+                <input type="checkbox" name="musica" onclick="revisaCheckTema(this);">Música
+                <input type="checkbox" name="deportes" onclick="revisaCheckTema(this);">Deportes
+                <input type="checkbox" name="ciencias" onclick="revisaCheckTema(this);">Ciencias
+                <input type="checkbox" name="religion" onclick="revisaCheckTema(this);">Religión
+                <input type="checkbox" name="politica" onclick="revisaCheckTema(this);">Política
+                <input type="checkbox" name="tecnología" onclick="revisaCheckTema(this);">Tecnología
+                <input type="checkbox" name="juegos" onclick="revisaCheckTema(this);">Juegos
+                <input type="checkbox" name="baile" onclick="revisaCheckTema(this);">Baile
+                <input type="checkbox" name="comida" onclick="revisaCheckTema(this);">Comida
+                <input type="checkbox" name="otro" onclick="revisaCheckTema(this);">Otro
+                <input id="otro-id" type="text" name="otro" style="display:none;" maxlength="15" minlength="3"> <br>
+
+                <label for="foto">Subir Foto </label> 
+                <input type="file" id="foto1" nombre="foto1" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ required>
+                <input type="file" id="foto2" nombre="foto2" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto3" nombre="foto3" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto4" nombre="foto4" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto5" nombre="foto5" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+
+                <button id="submit-btn" type="button">Agregar esta actividad</button>
             </form>
 
         </div>
