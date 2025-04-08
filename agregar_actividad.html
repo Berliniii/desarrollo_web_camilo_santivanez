@@ -6,6 +6,7 @@
         <title>Agregar Actividad</title>
         <meta name="viewport" content="width=device-width, initial-scale = 1.0"/>
         <link rel="stylesheet" href="agregar_actividad.css">
+        <script src="select.js" defer></script>
     </head>
     <body>
         <h1>Informar Actividad</h1>
@@ -19,7 +20,7 @@
                 <h2>¿Dónde?</h2>
                 
                 <label for="select-region">Región</label>
-                <select name="select-region", id="select-region" required>
+                <select name="select-region" id="select-region" required>
                     <option value="">Seleccione una Región</option>
                 </select><br>
 
@@ -57,7 +58,6 @@
                         <input type="checkbox" name="tiktok" onclick="revisaCheck(this);"> TikTok
                         <input id="tiktok" type="text" name="tiktok-id" style="display:none;" minlength="4" maxlength="50"><br>
                     </div>
-                </select>
                 
                 <hr>
 
@@ -86,11 +86,11 @@
                 <input id="otro-id" type="text" name="otro" style="display:none;" maxlength="15" minlength="3"> <br>
 
                 <label for="foto">Subir Foto </label> 
-                <input type="file" id="foto1" nombre="foto1" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ required>
-                <input type="file" id="foto2" nombre="foto2" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
-                <input type="file" id="foto3" nombre="foto3" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
-                <input type="file" id="foto4" nombre="foto4" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
-                <input type="file" id="foto5" nombre="foto5" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto1" name="foto1" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ required>
+                <input type="file" id="foto2" name="foto2" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto3" name="foto3" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto4" name="foto4" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
+                <input type="file" id="foto5" name="foto5" accept="image/png, image/jpeg" onclick="subirFoto(this);"/ style="display: none;"><br>
 
                 <button id="submit-btn" type="button">Agregar esta actividad</button>
             </form>
