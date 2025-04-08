@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  tr:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  #detalle {
+    display: none;
+  }
+  
+  .botones {
+    margin-top: 20px;
+  }
+  
+  .botones a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: white;
+    background-color: #007BFF;
+    padding: 8px 16px;
+    border-radius: 5px;
+  }
+  
+  .botones a:hover {
+    background-color: #0056b3;
+  }
