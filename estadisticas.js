@@ -19,7 +19,7 @@ const ctxTorta = document.getElementById("graficoTorta");
 new Chart(ctxTorta, {
   type: "pie",
   data: {
-    labels: ["Reciclaje", "Charlas", "Jornada Salud", "Voluntariado"],
+    labels: ["Reciclaje", "Charlas", "Deporte", "Voluntariado"],
     datasets: [{
       label: "Actividades por Tipo",
       data: [4, 3, 2, 1],
