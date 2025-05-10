@@ -18,16 +18,10 @@ const validateName = (name) => {
   };
   
   const validatePhoneNumber = (phoneNumber) => {
-    //if (!phoneNumber) return false; //No es necesaria la validacion
-    // validación de longitud
-    let lengthValid = () => phoneNumber.trim() = "";
-  
-    // validación de formato
-    let regex = /^\+569\.\d{8}$/;
-    let formatValid = regex.test(phoneNumber);
-  
-    // devolvemos la lógica AND de las validaciones.
-    return lengthValid || formatValid;
+    const isEmpty = !phoneNumber || phoneNumber.trim() === "";
+    const isValidFormat = /^\+569\.\d{8}$/.test(phoneNumber);
+    
+    return isEmpty || isValidFormat;
   };
 
   // Prellenar fechas al cargar la página
