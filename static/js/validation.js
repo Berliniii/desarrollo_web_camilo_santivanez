@@ -3,44 +3,31 @@ const validateName = (name) => {
     let lengthValid = name.trim().length <= 200;
     
     return lengthValid;
-  };
+  }
   
   const validateEmail = (email) => {
     if (!email) return false;
     let lengthValid = email.length < 100;
-
+  
     // validamos el formato
     let regex = /^[\w.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     let formatValid = regex.test(email);
-
+  
     // devolvemos la lógica AND de las validaciones.
     return lengthValid && formatValid;
   };
   
-  const validateContact = () => {
-  const medios = ["whatsapp", "instagram", "telegram", "x", "tiktok", "otra"];
-  let isValid = true;
-  let selectedCount = 0;
-
-  medios.forEach(medio => {
-    const checkbox = document.querySelector(`input[name="${medio}"]`);
-    const inputTexto = document.getElementById(medio);
-    
-    if (checkbox && checkbox.checked) {
-      selectedCount++;
-      const valor = inputTexto ? inputTexto.value.trim() : '';
-      
-      if (valor.length < 4 && valor.length > 50) {
-        return false;
-      }
-    }
-  });
-
-  if (selectedCount > 5) {
-    return false;
-  }
-
-  return true;
+  const validatePhoneNumber = (phoneNumber) => {
+    //if (!phoneNumber) return false; //No es necesaria la validacion
+    // validación de longitud
+    let lengthValid = () => phoneNumber.trim() = "";
+  
+    // validación de formato
+    let regex = /^\+569\.\d{8}$/;
+    let formatValid = regex.test(phoneNumber);
+  
+    // devolvemos la lógica AND de las validaciones.
+    return lengthValid || formatValid;
   };
 
   // Prellenar fechas al cargar la página
@@ -140,7 +127,6 @@ function validarFechas() {
     if (!validateName(name)) setInvalidInput("Nombre");
     if (!validateEmail(email)) setInvalidInput("Email");
     if (!validatePhoneNumber(phoneNumber)) setInvalidInput("Número de celular");
-    //if (!validateContact()) setInvalidInput("Contacto")
     if (!validateFiles(validFiles)) setInvalidInput("Fotos (1 a 5 imágenes)");
   
     const validationBox = document.getElementById("val-box");
