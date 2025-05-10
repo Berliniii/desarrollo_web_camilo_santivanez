@@ -3,31 +3,44 @@ const validateName = (name) => {
     let lengthValid = name.trim().length <= 200;
     
     return lengthValid;
-  }
+  };
   
   const validateEmail = (email) => {
     if (!email) return false;
     let lengthValid = email.length < 100;
-  
+
     // validamos el formato
-    let re = /^[\w.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    let formatValid = re.test(email);
-  
+    let regex = /^[\w.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    let formatValid = regex.test(email);
+
     // devolvemos la lógica AND de las validaciones.
     return lengthValid && formatValid;
   };
   
-  const validatePhoneNumber = (phoneNumber) => {
-    if (!phoneNumber) return false;
-    // validación de longitud
-    let lengthValid = phoneNumber.length >= 8;
-  
-    // validación de formato
-    let re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-    let formatValid = re.test(phoneNumber);
-  
-    // devolvemos la lógica AND de las validaciones.
-    return lengthValid && formatValid;
+  const validateContact = () => {
+  const medios = ["whatsapp", "instagram", "telegram", "x", "tiktok", "otra"];
+  let isValid = true;
+  let selectedCount = 0;
+
+  medios.forEach(medio => {
+    const checkbox = document.querySelector(`input[name="${medio}"]`);
+    const inputTexto = document.getElementById(medio);
+    
+    if (checkbox && checkbox.checked) {
+      selectedCount++;
+      const valor = inputTexto ? inputTexto.value.trim() : '';
+      
+      if (valor.length < 4 && valor.length > 50) {
+        return false;
+      }
+    }
+  });
+
+  if (selectedCount > 5) {
+    return false;
+  }
+
+  return true;
   };
 
   // Prellenar fechas al cargar la página
@@ -122,11 +135,12 @@ function validarFechas() {
       isValid = false;
     };
   
+    if (!validateSelect(region)) setInvalidInput("Región");
+    if (!validateSelect(comuna)) setInvalidInput("Comuna");
     if (!validateName(name)) setInvalidInput("Nombre");
     if (!validateEmail(email)) setInvalidInput("Email");
     if (!validatePhoneNumber(phoneNumber)) setInvalidInput("Número de celular");
-    if (!validateSelect(region)) setInvalidInput("Región");
-    if (!validateSelect(comuna)) setInvalidInput("Comuna");
+    //if (!validateContact()) setInvalidInput("Contacto")
     if (!validateFiles(validFiles)) setInvalidInput("Fotos (1 a 5 imágenes)");
   
     const validationBox = document.getElementById("val-box");
