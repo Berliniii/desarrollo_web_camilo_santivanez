@@ -59,9 +59,12 @@ function validarFechas() {
         return false;
     }
     
-    // Si hay fecha de término, validar que sea mayor que la de inicio
+    // Prellenar fecha de término con 3 horas después de la fecha de inicio
+    const fechaInicio = new Date(fechaInicioInput.value);
+    const fechaTerminoAuto = new Date(fechaInicio.getTime() + (3 * 60 * 60 * 1000)); // Sumar 3 horas en milisegundos
+    
+    // Validar que la fecha de término sea mayor que la de inicio
     if (fechaTerminoInput.value) {
-        const fechaInicio = new Date(fechaInicioInput.value);
         const fechaTermino = new Date(fechaTerminoInput.value);
         
         if (fechaTermino <= fechaInicio) {
