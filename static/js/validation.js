@@ -156,7 +156,10 @@ function validarFechas() {
       submitButton.style.marginRight = "10px";
       submitButton.addEventListener("click", () => {
         // No alcanzo a poner un boton de regreso :c, pondre un alert noma
-        alert("Hemos recibido su información, muchas gracias y suerte en su actividad")
+        //alert("Hemos recibido su información, muchas gracias y suerte en su actividad")
+        myForm.submit();
+        validationBox.hidden = true;  
+        myForm.style.display = "block";
       });
   
       const backButton = document.createElement("button");
