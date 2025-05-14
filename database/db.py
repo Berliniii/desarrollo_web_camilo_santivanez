@@ -94,6 +94,13 @@ class ActividadTema(Base):
 # --- Database Functions ---
 
 ## REGION
+
+def get_all_regiones():
+    session = SessionLocal()
+    regiones = session.query(Region).order_by(Region.id).all()
+    session.close()
+    return regiones
+
 def get_region_by_id(id):
     session = SessionLocal()
     region = session.query(Region).filter_by(id=id).first()

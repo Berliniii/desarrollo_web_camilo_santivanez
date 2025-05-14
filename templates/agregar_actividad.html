@@ -20,6 +20,9 @@
                 <label for="select-region">Región</label>
                 <select name="select-region" id="select-region" required>
                     <option value="">Seleccione una Región</option>
+                    {% for region in regiones %}
+                        <option value="{{ region.id }}">{{ region.nombre }}</option>
+                    {% endfor %}
                 </select><br>
 
                 <label for="select-comuna">Comuna</label>

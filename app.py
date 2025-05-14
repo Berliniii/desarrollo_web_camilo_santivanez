@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, session, redirect
+from flask import Flask, request, render_template, url_for, session, redirect, jsonify
 from utils.validations import *
 from database import db
 from werkzeug.utils import secure_filename
@@ -53,9 +53,15 @@ def listado():
 def estadisticas():
     return render_template('estadisticas.html')
 
+@app.route('/api/comunas/<int:region_id>')
+def api_comunas(region_id):
+    comunas = db.get_comunas_by_region_id(region_id)
+    return jsonify([{"id": c.id, "nombre": c.nombre} for c in comunas])
+
 @app.route('/agregar_actividad', methods=["GET", "POST"])
 def agregar():
     mensaje = None
+    regiones = db.get_all_regiones() 
     if request.method == "POST":
         # Obtener datos del formulario
         comuna_id = request.form.get("select-comuna")
@@ -93,8 +99,9 @@ def agregar():
         # Falta agregar la lógica para guardar fotos, temas y contactos 
 
         mensaje = "Actividad agregada exitosamente."
+        return render_template('agregar_actividad.html', mensaje=mensaje, regiones=regiones)
 
-    return render_template('agregar_actividad.html', mensaje=mensaje)
+    return render_template('agregar_actividad.html', mensaje=mensaje, regiones=regiones)
 
 if __name__ == '__main__':
     app.run(debug=True)
