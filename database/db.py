@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, DateTime, String, ForeignKey, Enum, ForeignKey
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
 from datetime import datetime
 
 DB_NAME = "tarea2"
@@ -135,6 +135,11 @@ def get_actividad_by_id(id):
 def get_actividades_recientes(limit=5):
     session = SessionLocal()
     actividades = session.query(Actividad)\
+        .options(
+            joinedload(Actividad.comuna),
+            joinedload(Actividad.temas),
+            joinedload(Actividad.fotos)
+        )\
         .order_by(Actividad.dia_hora_inicio.desc())\
         .limit(limit)\
         .all()
