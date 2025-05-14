@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="author" content="Camilo Santivañez"/>
+    <title>{% block title %}Gestor de Actividades{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=44781&format=png&color=000000" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <h1><b>Tarea 1: </b>Gestor de Actividades</h1>
+    <ul class="navbar">
+        <li><a href="{{ url_for('agregar') }}">Agregar Actividad</a></li>
+        <li><a href="{{ url_for('listado') }}">Listado de Actividades</a></li>
+        <li><a href="{{ url_for('estadisticas') }}">Estadísticas</a></li>
+    </ul>
+    {% block content %}{% endblock %}
+</body>
+</html>
