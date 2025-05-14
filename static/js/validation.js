@@ -107,6 +107,8 @@ function validarFechas() {
     const phoneNumber = myForm["celu-organizador"].value;
     const region = myForm["select-region"].value;
     const comuna = myForm["select-comuna"].value;
+    const fechaInicio = myForm["dia-hora-inicio"].value;
+    const fechaTermino = myForm["dia-hora-termino"].value;
   
     // Archivos (filtramos los inputs visibles y con valor)
     const fileInputs = ["foto1", "foto2", "foto3", "foto4", "foto5"].map(id => document.getElementById(id));
@@ -124,6 +126,7 @@ function validarFechas() {
     if (!validateName(name)) setInvalidInput("Nombre");
     if (!validateEmail(email)) setInvalidInput("Email");
     if (!validatePhoneNumber(phoneNumber)) setInvalidInput("Número de celular");
+    if (!validarFechas(fechaInicio, fechaTermino)) setInvalidInput("Fechas");
     if (!validateFiles(validFiles)) setInvalidInput("Fotos (1 a 5 imágenes)");
   
     const validationBox = document.getElementById("val-box");
@@ -169,5 +172,6 @@ function validarFechas() {
     }
   };
   
+  document.getElementById('dia-hora-inicio').addEventListener('change', validarFechas);
   document.getElementById("submit-btn").addEventListener("click", validateForm);
   
