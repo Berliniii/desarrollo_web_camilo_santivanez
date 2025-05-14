@@ -1,75 +1,32 @@
-<!DOCTYPE html>
-<html lang="es">
-<html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="author" content="Camilo Santivañez"/>
-        <title>Gestor de Actividades</title>
-        <meta name="viewport" content="width=device-width, initial-scale = 1.0"/>
-        <link rel="icon" href="https://img.icons8.com/?size=100&id=44781&format=png&color=000000" type="image/x-icon">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    </head>
-    <body>
-        <h1><b>Tarea 1: </b>Gestor de Actividades </h1>
-        
-        <ul class="navbar">
-            <li><a href="{{url_for('agregar')}}">Agregar Actividad</a></li>
-            <li><a href="{{url_for('listado')}}">Listado de Actividades</a></li>
-            <li><a href="{{url_for('estadisticas')}}">Estadísticas</a></li>
-        </ul>
-
-        <h2>Bienvenido al gestor de actividades. </h2>
-        <p>Actividades recientes:</p>
-
-        <table style="width:100%">
-            <tr>
-                <th>Inicio</th>
-                <th>Termino</th>
-                <th>Comuna</th>
-                <th>Sector</th>
-                <th>Tema</th>
-                <th>Foto</th>
-            </tr>
-            <tr>
-                <th>2025-03-28<br>12:00</th>
-                <th>2025-03-28<br>14:00</th>
-                <th>Santiago</th>
-                <th>Beauchef 850, terraza</th>
-                <th>Escuela de boxeo</th>
-                <th><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDDeftnA89ExzeafpafIh7DW57T8klQOcvFw&s" alt="box_meme" width="150"></th>
-            </tr>
-            <tr>
-                <th>2025-03-29<br>19:00</th>
-                <th>2025-03-29<br>20:00</th>
-                <th>Ñuñoa</th>
-                <th>Plaza</th>
-                <th>Como deshidratar una fruta</th>
-                <th><img src="https://pbs.twimg.com/media/DgoSJMAUYAAUHIR.jpg" alt="simpson_meme" width="150"></th>
-            </tr>
-            <tr>
-                <th>2025-04-02<br>10:00</th>
-                <th>2025-04-02<br>12:00</th>
-                <th>Providencia</th>
-                <th>Biblioteca Municipal</th>
-                <th>Taller de escritura creativa</th>
-                <th><img src="https://images.theconversation.com/files/518264/original/file-20230329-25-jqto6a.jpg?ixlib=rb-4.1.0&rect=3%2C5%2C1195%2C674&q=20&auto=format&w=320&fit=clip&dpr=2&usm=12&cs=strip" alt="escritura" width="150"></th>
-            </tr>
-            <tr>
-                <th>2025-04-03<br>15:00</th>
-                <th>2025-04-03<br>17:30</th>
-                <th>La Florida</th>
-                <th>Parque Lo Hermida</th>
-                <th>Clase de yoga al aire libre</th>
-                <th><img src="https://contents.mediadecathlon.com/s905225/k$d79639ef928b78aa12799d2733bbbbf4/1800x0/1503pt1228/3005xcr2254/posture_yoga.png?format=auto" alt="yoga_icon" width="80"></th>
-            </tr>
-            <tr>
-                <th>2025-04-05<br>18:00</th>
-                <th>2025-04-05<br>20:00</th>
-                <th>Recoleta</th>
-                <th>Centro Cultural</th>
-                <th>Cine foro: películas latinoamericanas</th>
-                <th><img src="https://embed.at/wp-content/uploads/2023/10/cinema.jpg" alt="cine_icon" width="80"></th>
-            </tr>
-        </table>   
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Gestor de Actividades{% endblock %}
+{% block content %}
+    <h2>Bienvenido al gestor de actividades.</h2>
+    <p>Actividades recientes:</p>
+    <table style="width:100%">
+        <tr>
+            <th>Inicio</th>
+            <th>Término</th>
+            <th>Comuna</th>
+            <th>Sector</th>
+            <th>Tema</th>
+            <th>Foto</th>
+        </tr>
+        {% for actividad in actividades %}
+        <tr>
+            <td>{{ actividad.inicio }}</td>
+            <td>{{ actividad.termino }}</td>
+            <td>{{ actividad.comuna }}</td>
+            <td>{{ actividad.sector }}</td>
+            <td>{{ actividad.tema }}</td>
+            <td>
+                {% if actividad.foto_url %}
+                    <img src="{{ actividad.foto_url }}" alt="foto" width="120">
+                {% else %}
+                    Sin foto
+                {% endif %}
+            </td>
+        </tr>
+{% endfor %}
+    </table>
+{% endblock %}

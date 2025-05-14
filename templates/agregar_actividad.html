@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="author" content="Camilo Santivañez"/>
-        <title>Agregar Actividad</title>
-        <meta name="viewport" content="width=device-width, initial-scale = 1.0"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/agregar_actividad.css') }}"> 
-        <script src="{{ url_for('static', filename='js/select.js') }} " defer></script>  
-        <script src="{{ url_for('static', filename='js/socials.js') }}" defer></script>   
-        <script src="{{ url_for('static', filename='js/validation.js') }}" defer></script>  
-    </head>
-    <body>
-        <h1>Informar Actividad</h1>
-        <div class="main_container">
+{% extends "base.html" %}
+{% block title %}Agregar Actividad{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/agregar_actividad.css') }}">
+    <script src="{{ url_for('static', filename='js/select.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/socials.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/validation.js') }}" defer></script>
+{% endblock %}
+{% block content %}
+    <h1>Informar Actividad</h1>
+    <div class="main_container">
             <div id="val-box" hidden>
                 <h2 id="val-msg"></h2>
                 <ul id="val-list"></ul>
@@ -100,6 +96,4 @@
             </form>
 
         </div>
-
-    </body>
-</html>
+{% endblock %}
