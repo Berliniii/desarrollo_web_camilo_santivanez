@@ -133,6 +133,27 @@ def get_comuna_by_nombre(nombre):
     return comuna
 
 #ACTIVIDAD
+def get_total_actividades():
+    session = SessionLocal()
+    total = session.query(Actividad).count()
+    session.close()
+    return total
+
+def get_actividades_paginadas(page=1, per_page=5):
+    session = SessionLocal()
+    actividades = session.query(Actividad)\
+        .options(
+            joinedload(Actividad.comuna),
+            joinedload(Actividad.temas),
+            joinedload(Actividad.fotos)
+        )\
+        .order_by(Actividad.dia_hora_inicio.desc())\
+        .offset((page - 1) * per_page)\
+        .limit(per_page)\
+        .all()
+    session.close()
+    return actividades
+
 def get_actividad_by_id(id):
     session = SessionLocal()
     actividad = session.query(Actividad).filter_by(id=id).first()
@@ -199,6 +220,20 @@ def create_foto(ruta_archivo, nombre_archivo, actividad_id):
     return new_foto
 
 #CONTACTAR POR
+def create_contacto(nombre_red, identificador, actividad_id):
+    """Crea un nuevo registro en la tabla contactar_por"""
+    session = SessionLocal()
+    new_contacto = ContactarPor(
+        nombre_red=nombre_red,
+        identificador=identificador,
+        actividad_id=actividad_id
+    )
+    session.add(new_contacto)
+    session.commit()
+    session.refresh(new_contacto)
+    session.close()
+    return new_contacto
+
 def get_contacto_by_id(id):
     session = SessionLocal()
     contacto = session.query(ContactarPor).filter_by(id=id).first()
@@ -226,6 +261,20 @@ def create_contacto(nombre, identificador, actividad_id):
 
 
 #ACTIVIDAD TEMA
+def create_tema(tema, glosa_otro, actividad_id):
+    """Crea un nuevo registro en la tabla actividad_tema"""
+    session = SessionLocal()
+    new_tema = ActividadTema(
+        tema=tema,
+        glosa_otro=glosa_otro,
+        actividad_id=actividad_id
+    )
+    session.add(new_tema)
+    session.commit()
+    session.refresh(new_tema)
+    session.close()
+    return new_tema
+
 def get_tema_by_id(id):
     session = SessionLocal()
     tema = session.query(ActividadTema).filter_by(id=id).first()
