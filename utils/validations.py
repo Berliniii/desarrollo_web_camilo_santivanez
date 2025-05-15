@@ -24,7 +24,7 @@ def validate_celular(value):
     return is_empty or is_valid_format
 
 # --- Por implementar ---
-# contacto, tema 
+# contacto, tema (no se me ocurre como hacerlo :c)
 
 def validate_fechas(fecha_inicio, fecha_termino):
     try:
