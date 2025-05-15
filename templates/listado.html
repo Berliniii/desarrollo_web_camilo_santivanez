@@ -20,9 +20,31 @@
               </tr>
             </thead>
             <tbody id="cuerpo-tabla">
-              <!-- Se llena con JavaScript -->
+              {% for actividad in actividades %}
+                <tr onclick="mostrarDetalle('{{ loop.index0 }}')">
+                    <td>{{ actividad.inicio }}</td>
+                    <td>{{ actividad.termino }}</td>
+                    <td>{{ actividad.comuna }}</td>
+                    <td>{{ actividad.sector }}</td>
+                    <td>{{ actividad.tema }}</td>
+                    <td>{{ actividad.organizador }}</td>
+                    <td>{{ actividad.fotos }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
           </table>
+
+          <!-- Paginación -->
+        <div class="pagination">
+            {% if current_page > 1 %}
+                <a href="{{ url_for('listado', page=current_page-1) }}">&laquo; Anterior</a>
+            {% endif %}
+            
+            {% if current_page < total_pages %}
+                <a href="{{ url_for('listado', page=current_page+1) }}">Siguiente &raquo;</a>
+            {% endif %}
+        </div>
+          
           <div id="detalle">
             <h2>Detalle de la Actividad</h2>
             <ul id="detalle-lista"></ul>
@@ -32,4 +54,9 @@
             </div>
           </div>
     </div>
+
+    <script>
+    // Pasar datos de Python a JavaScript usando una variable global
+    window.actividadesData = JSON.parse('{{ actividades|tojson|safe }}');
+    </script>
 {% endblock %}
