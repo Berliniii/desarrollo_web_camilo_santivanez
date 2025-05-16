@@ -47,7 +47,35 @@ def index():
 
 @app.route('/listado')
 def listado():
-    return render_template('listado.html')
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    
+    # Obtener total de actividades para la paginación
+    total_actividades = db.get_total_actividades()
+    total_pages = (total_actividades + per_page - 1) // per_page
+    
+    # Obtener actividades de la página actual
+    actividades = db.get_actividades_paginadas(page=page, per_page=per_page)
+    
+    # Formatear datos para el frontend
+    data = []
+    for actividad in actividades:
+        tema = actividad.temas[0].tema if actividad.temas else "-"
+        data.append({
+            "id": actividad.id,
+            "inicio": actividad.dia_hora_inicio.strftime('%Y-%m-%d %H:%M'),
+            "termino": actividad.dia_hora_termino.strftime('%Y-%m-%d %H:%M') if actividad.dia_hora_termino else "",
+            "comuna": actividad.comuna.nombre,
+            "sector": actividad.sector,
+            "tema": tema,
+            "organizador": actividad.nombre,
+            "fotos": len(actividad.fotos)
+        })
+    
+    return render_template('listado.html', 
+                         actividades=data,
+                         current_page=page,
+                         total_pages=total_pages)
 
 @app.route('/estadisticas')
 def estadisticas():
@@ -73,6 +101,42 @@ def agregar():
         dia_hora_termino = request.form.get("dia-hora-termino")
         descripcion = request.form.get("descripcion-actividad")
 
+        # ---Validaciones---
+        errores = []
+
+        #Comuna
+        if not validate_comuna(comuna_id):
+            errores.append("Comuna inválida")
+        #Sector
+        if not validate_sector(sector):
+            errores.append("Sector debe tener máximo 100 caracteres")
+        #Nombre    
+        if not validate_nombre(nombre):
+            errores.append("Nombre inválido o muy largo (máximo 200 caracteres)")
+        #Email    
+        if not validate_email(email):
+            errores.append("Email inválido")
+        #Celular    
+        if celular and not validate_celular(celular):
+            errores.append("Formato de celular inválido (+569.XXXXXXXX)")
+        #Fechas    
+        if not validate_fechas(dia_hora_inicio, dia_hora_termino):
+            errores.append("Fechas inválidas o término antes que inicio")
+        #Fotos
+        # Validar fotos
+        for i in range(1, 6):
+            file = request.files.get(f"foto{i}")
+            if file and file.filename:
+                if not validate_conf_img(file):
+                    errores.append(f"Foto {i}: formato inválido (solo PNG, JPG, JPEG)")
+
+        # Mostramos errores y no mostramos nada mas 
+        if errores:
+            return render_template('agregar_actividad.html', 
+                                mensaje="Errores en el formulario", 
+                                errores=errores,
+                                regiones=regiones)
+
         # Convertir fechas a datetime
         from datetime import datetime
         try:
@@ -96,7 +160,50 @@ def agregar():
             descripcion=descripcion
         )
 
-        # Falta agregar la lógica para guardar fotos, temas y contactos 
+        actividad_id = actividad.id
+
+
+        # Falta agregar la lógica para guardar fotos, temas y contactos (Implementado)
+
+        #Guardar contactos
+        contactos = [
+            ("whatsapp", request.form.get("whatsapp-id")),
+            ("instagram", request.form.get("instagram-id")),
+            ("telegram", request.form.get("telegram-id")),
+            ("x", request.form.get("x-id")),
+            ("tiktok", request.form.get("tiktok-id")),
+            ("otra", request.form.get("otra-id")),
+        ]
+        for nombre_contacto, identificador in contactos:
+            if identificador and identificador.strip():
+                db.create_contacto(nombre_contacto, identificador, actividad_id)
+
+        # Guardar temas
+        temas = [
+            "música", "deporte", "ciencias", "religión", "política",
+            "tecnología", "juegos", "baile", "comida", "otro"
+        ]
+        for tema in temas:
+            if request.form.get(tema):
+                db.create_tema(tema, None, actividad_id)
+        # Tema "otro"
+        if request.form.get("otro"):
+            glosa_otro = request.form.get("otro-id")
+            db.create_tema("otro", glosa_otro, actividad_id)
+
+        # Guardar fotos
+        for i in range(1, 6):
+            file = request.files.get(f"foto{i}")
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                ruta_archivo = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(ruta_archivo)
+                db.create_foto(
+                    ruta_archivo=f"uploads/{filename}",
+                    nombre_archivo=filename,
+                    actividad_id=actividad_id
+                )
+
 
         mensaje = "Actividad agregada exitosamente."
         return render_template('agregar_actividad.html', mensaje=mensaje, regiones=regiones)
