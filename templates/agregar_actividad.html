@@ -9,6 +9,16 @@
 {% block content %}
     <h1>Informar Actividad</h1>
     <div class="main_container">
+        {% if errores %}
+            <div class="errores">
+                <h3>Corregir los siguientes errores:</h3>
+                <ul>
+                    {% for error in errores %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
             <div id="val-box" hidden>
                 <h2 id="val-msg"></h2>
                 <ul id="val-list"></ul>
@@ -76,8 +86,8 @@
                 <textarea name="descripcion-actividad" id="descripcion-actividad" rows="10" cols="50"></textarea><br>
 
                 <label for="tema">Tema</label><br>
-                <input type="checkbox" name="musica" onclick="revisaCheckTema(this);">Música
-                <input type="checkbox" name="deportes" onclick="revisaCheckTema(this);">Deportes
+                <input type="checkbox" name="música" onclick="revisaCheckTema(this);">Música
+                <input type="checkbox" name="deporte" onclick="revisaCheckTema(this);">Deportes
                 <input type="checkbox" name="ciencias" onclick="revisaCheckTema(this);">Ciencias
                 <input type="checkbox" name="religion" onclick="revisaCheckTema(this);">Religión
                 <input type="checkbox" name="politica" onclick="revisaCheckTema(this);">Política
