@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 import hashlib
 import filetype
 import os
+from markupsafe import escape
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -93,13 +94,13 @@ def agregar():
     if request.method == "POST":
         # Obtener datos del formulario
         comuna_id = request.form.get("select-comuna")
-        sector = request.form.get("sector")
+        sector = escape(request.form.get("sector"))
         nombre = request.form.get("nombre_organizador")
-        email = request.form.get("email-organizador")
+        email = escape(request.form.get("email-organizador"))
         celular = request.form.get("celu-organizador")
         dia_hora_inicio = request.form.get("dia-hora-inicio")
         dia_hora_termino = request.form.get("dia-hora-termino")
-        descripcion = request.form.get("descripcion-actividad")
+        descripcion = escape(request.form.get("descripcion-actividad"))
 
         # ---Validaciones---
         errores = []
@@ -122,6 +123,10 @@ def agregar():
         #Fechas    
         if not validate_fechas(dia_hora_inicio, dia_hora_termino):
             errores.append("Fechas inválidas o término antes que inicio")
+        #Tema   
+        if not any(request.form.get(tema) for tema in temas):
+            errores.append("Debe seleccionar al menos un tema.")
+        
         #Fotos
         # Validar fotos
         for i in range(1, 6):
@@ -167,12 +172,12 @@ def agregar():
 
         #Guardar contactos
         contactos = [
-            ("whatsapp", request.form.get("whatsapp-id")),
-            ("instagram", request.form.get("instagram-id")),
-            ("telegram", request.form.get("telegram-id")),
-            ("x", request.form.get("x-id")),
-            ("tiktok", request.form.get("tiktok-id")),
-            ("otra", request.form.get("otra-id")),
+            ("whatsapp", escape(request.form.get("whatsapp-id"))),
+            ("instagram", escape(request.form.get("instagram-id"))),
+            ("telegram", escape(request.form.get("telegram-id"))),
+            ("x", escape(request.form.get("x-id"))),
+            ("tiktok", escape(request.form.get("tiktok-id"))),
+            ("otra", escape(request.form.get("otra-id"))),
         ]
         for nombre_contacto, identificador in contactos:
             if identificador and identificador.strip():
@@ -188,7 +193,7 @@ def agregar():
                 db.create_tema(tema, None, actividad_id)
         # Tema "otro"
         if request.form.get("otro"):
-            glosa_otro = request.form.get("otro-id")
+            glosa_otro = escape(request.form.get("otro-id"))
             db.create_tema("otro", glosa_otro, actividad_id)
 
         # Guardar fotos
