@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `tarea2`.`actividad_tema` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `tarea2`.`coemntario`
+-- Table `tarea2`.`comentario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tarea2`.`comentario` (
   `id` INT NOT NULL AUTO_INCREMENT,
