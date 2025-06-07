@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, url_for, session, redirect, jsonify
+from flask_cors import cross_origin
 from utils.validations import *
 from database import db
 from werkzeug.utils import secure_filename
@@ -218,6 +219,53 @@ def agregar():
         return render_template('agregar_actividad.html', mensaje=mensaje, regiones=regiones)
 
     return render_template('agregar_actividad.html', mensaje=mensaje, regiones=regiones)
+
+@app.route("/get-stats-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_estadisticas_data():
+    #Obtener los datos para cada grafico
+    actividades_dia = db.get_actividades_por_dia()
+    actividades_tipo = db.get_actividades_por_tipo()
+    actividades_horario_mes = db.get_actividades_por_horario_mes()
+
+    datos_grafico_lineas = {
+        "labels": [str(act.fecha) for act in actividades_dia],
+        "datos": [act.cantidad for act in actividades_dia]
+    }
+
+    datos_grafico_torta = {
+        "labels": [act.tema for act in actividades_tipo],
+        "datos": [act.cantidad for act in actividades_tipo]
+    }
+
+    #Clasificar datos segun horario 
+    meses = {i: {"mañana": 0, "mediodia": 0, "tarde":0} for i in range(1,13)}
+    
+    for act in actividades_horario_mes:
+        mes = act.mes
+        hora = act.hora
+        if 6 <= hora < 12:
+            meses[mes]["mañana"] += act.cantidad
+        elif 12 <= hora < 14:
+            meses[mes]["mediodia"] += act.cantidad
+        elif 14 <= hora < 20:
+            meses[mes]["tarde"] += act.cantidad
+    
+    nombres_meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    
+    datos_grafico_barras = {
+        "labels": nombres_meses,
+        "mañana": [meses[i+1]["mañana"] for i in range(12)],
+        "mediodia": [meses[i+1]["mediodia"] for i in range(12)],
+        "tarde": [meses[i+1]["tarde"] for i in range(12)]
+    }
+
+    return jsonify({
+        "por_dia": datos_grafico_lineas,
+        "por_tipo": datos_grafico_torta,
+        "por_horario": datos_grafico_barras
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
