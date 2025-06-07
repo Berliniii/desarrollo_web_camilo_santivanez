@@ -48,6 +48,24 @@
           <div id="detalle">
             <h2>Detalle de la Actividad</h2>
             <ul id="detalle-lista"></ul>
+
+            <!-- Formulario Comentarios -->
+            <div class="comentarios-section"> 
+              <h3>Agregar Comentarios</h3>
+              <div id="mensaje-error" class="mensaje-error"></div>
+              <form id="comentario-form" class="comentario-form">
+                <div class="form-group">
+                  <label for="nombre">Nombre:</label>
+                  <input type="text" id="nombre" name="nombre" required minlength="3" maxlength="80">
+                </div>
+                <div class="form-group">
+                  <label for="texto">Comentario:</label>
+                  <textarea id="texto" name="texto" required minlength="5" rows="4" cols="50"></textarea>
+                </div>
+                <button type="submit">Agregar Comentario</button>
+              </form>
+            </div>
+
             <div class="botones">
               <a href="#" onclick="volverListado()">Volver al listado</a>
               <a href="{{url_for('index')}}">Volver a la portada</a>
