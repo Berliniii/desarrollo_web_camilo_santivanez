@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, DateTime, String, ForeignKey, Enum, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
+from sqlalchemy import func, cast, extract, Date
 from datetime import datetime
 
 DB_NAME = "tarea2"
@@ -286,3 +287,45 @@ def get_temas_by_actividad_id(actividad_id):
     temas = session.query(ActividadTema).filter_by(actividad_id=actividad_id).all()
     session.close()
     return temas
+
+# DATOS PARA LAS ESTADISTICAS
+#Grafico 1
+def get_actividades_por_dia(limit=10): #limitado a los ultimos 10 dias
+    session = SessionLocal()
+    result = session.query(
+        cast(Actividad.dia_hora_inicio, Date).label('fecha'),
+        func.count(Actividad.id).label('cantidad')        
+    ).group_by(cast(Actividad.dia_hora_inicio, Date))\
+    .order_by(cast(Actividad.dia_hora_inicio, Date).desc())\
+    .limit(limit)\
+    .all()
+    session.close()
+    return result 
+
+#Grafico 2
+def get_actividades_por_tipo():
+    session = SessionLocal()
+    result = session.query(
+        ActividadTema.tema,
+        func.count(ActividadTema.tema).label('cantidad')
+    ).group_by(ActividadTema.tema)\
+    .all()
+    session.close()
+    return result    
+
+#Grafico 3
+def get_actividades_por_horario_mes():
+    session = SessionLocal()
+    result = session.query(
+        extract('month', Actividad.dia_hora_inicio).label('mes'),
+        extract('hour', Actividad.dia_hora_inicio).label('hora'),
+        func.count(Actividad.id).label('cantidad')
+    ).group_by(
+        extract('month', Actividad.dia_hora_inicio),
+        extract('hour', Actividad.dia_hora_inicio)
+    ).order_by(
+        extract('month', Actividad.dia_hora_inicio),
+        extract('hour', Actividad.dia_hora_inicio)
+    ).all()
+    session.close()
+    return result 
