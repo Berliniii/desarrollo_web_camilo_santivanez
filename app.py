@@ -7,6 +7,7 @@ import hashlib
 import filetype
 import os
 from markupsafe import escape
+from datetime import datetime
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -266,6 +267,36 @@ def get_estadisticas_data():
         "por_tipo": datos_grafico_torta,
         "por_horario": datos_grafico_barras
     })
+
+@app.route('/agregar_comentario', methods=["POST"])
+def agregar_comentario():
+    try:
+        data = request.get_json()
+
+        #Validad Datos
+        nombre = data.get("nombre")
+        texto = data.get("texto")
+        actividad_id= data.get("actividad_id")
+
+        if not nombre or not texto or not actividad_id:
+            return jsonify({'error': 'Datos incompletos'}), 400
+        if len(nombre) < 3 or len(nombre)>80:
+            return jsonify({'error': 'Entre 3-80 caracteres'}), 400
+        if len(texto)<5:
+            return jsonify({'error': 'Comentario tiene que tener al menos 5 caracteres'}), 400
+
+        # Crear comentario
+        db.create_comentario(
+            nombre=nombre,
+            texto=texto,
+            fecha=datetime.now(),
+            actividad_id=actividad_id
+        )
+
+        return jsonify({'message': 'Comentario agregado exitosamente'}), 200
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
