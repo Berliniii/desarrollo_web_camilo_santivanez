@@ -52,6 +52,8 @@ class Actividad(Base):
     fotos = relationship("Foto", back_populates="actividad", cascade="all, delete")
     contactos = relationship("ContactarPor", back_populates="actividad", cascade="all, delete")
     temas = relationship("ActividadTema", back_populates="actividad", cascade="all, delete")
+    #Relacion para los comentarios
+    comentario = relationship("Comentario", back_populates="actividad", cascade="all, delete")
 
 class Foto(Base):
     __tablename__ = 'foto'
@@ -91,6 +93,18 @@ class ActividadTema(Base):
     actividad_id = Column(Integer, ForeignKey('actividad.id'), nullable=False)
     
     actividad = relationship("Actividad", back_populates="temas")
+
+class Comentario(Base):
+    __tablename__ = 'comentario'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    actividad_id=Column(Integer, ForeignKey('actividad.id'), nullable=False)
+
+    actividad = relationship("Actividad", back_populates="comentario", cascade="all, delete")
+
 
 # --- Database Functions ---
 
@@ -329,3 +343,18 @@ def get_actividades_por_horario_mes():
     ).all()
     session.close()
     return result 
+
+# PARA AGREGAR COMENTARIO
+def create_comentario(nombre, texto, fecha, actividad_id):
+    session = SessionLocal()
+    nuevo_comentario = Comentario(
+        nombre=nombre,
+        texto=texto,
+        fecha=fecha,
+        actividad_id=actividad_id
+    )
+    session.add(nuevo_comentario)
+    session.commit()
+    session.refresh(nuevo_comentario)
+    session.close()
+    return nuevo_comentario
