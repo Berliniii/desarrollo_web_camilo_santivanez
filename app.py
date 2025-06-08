@@ -297,6 +297,18 @@ def agregar_comentario():
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/comentarios/<int:actividad_id>')
+def get_comentarios(actividad_id):
+    try:
+        comentarios = db.get_comentarios_by_actividad_id(actividad_id)
+        return jsonify([{
+            'nombre': c.nombre,
+            'texto': c.texto,
+            'fecha': c.fecha.isoformat()
+        } for c in comentarios])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
