@@ -344,7 +344,7 @@ def get_actividades_por_horario_mes():
     session.close()
     return result 
 
-# PARA AGREGAR COMENTARIO
+# PARA AGREGAR Y OBTENER COMENTARIOS
 def create_comentario(nombre, texto, fecha, actividad_id):
     session = SessionLocal()
     nuevo_comentario = Comentario(
@@ -358,3 +358,12 @@ def create_comentario(nombre, texto, fecha, actividad_id):
     session.refresh(nuevo_comentario)
     session.close()
     return nuevo_comentario
+
+def get_comentarios_by_actividad_id(actividad_id):
+    session = SessionLocal()
+    comentarios = session.query(Comentario)\
+        .filter(Comentario.actividad_id == actividad_id)\
+        .order_by(Comentario.fecha.desc())\
+        .all()
+    session.close()
+    return comentarios
