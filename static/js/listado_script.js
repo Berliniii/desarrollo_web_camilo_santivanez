@@ -16,9 +16,38 @@ document.addEventListener('DOMContentLoaded', function() {
             <li><strong>Nombre del Organizador:</strong> ${actividad.organizador}</li>
             <li><strong>Total de Fotos:</strong> ${actividad.fotos}</li>
         `;
+        // Cargar comentarios de forma asíncrona
+        cargarComentarios(actividad.id);    
+
         tabla.style.display = "none";
         detalle.style.display = "block";
     }
+
+    async function cargarComentarios(actividadId) {
+    try {
+        const response = await fetch(`/comentarios/${actividadId}`);
+        const comentarios = await response.json();
+        
+        const listaComentarios = document.getElementById('lista-comentarios');
+        if (comentarios.length > 0) {
+            listaComentarios.innerHTML = comentarios.map(c => `
+                <div class="comentario">
+                    <p class="comentario-meta">
+                        <strong>${c.nombre}</strong> - 
+                        <span class="fecha">${new Date(c.fecha).toLocaleString()}</span>
+                    </p>
+                    <p class="comentario-texto">${c.texto}</p>
+                </div>
+            `).join('');
+        } else {
+            listaComentarios.innerHTML = '<p>No hay comentarios para esta actividad.</p>';
+        }
+    } catch (error) {
+        console.error('Error al cargar comentarios:', error);
+        document.getElementById('lista-comentarios').innerHTML = 
+            '<p class="error">Error al cargar los comentarios</p>';
+    }
+}
 
     function mostrarError(mensaje) {
         mensajeError.textContent = mensaje;
