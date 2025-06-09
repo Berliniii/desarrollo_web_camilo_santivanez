@@ -90,17 +90,21 @@ def api_comunas(region_id):
 @app.route('/agregar_actividad', methods=["GET", "POST"])
 def agregar():
     mensaje = None
+    temas = [
+        "música", "deporte", "ciencias", "religión", "política",
+        "tecnología", "juegos", "baile", "comida", "otro"
+    ]
     regiones = db.get_all_regiones() 
     if request.method == "POST":
         # Obtener datos del formulario
         comuna_id = request.form.get("select-comuna")
-        sector = escape(request.form.get("sector"))
+        sector = request.form.get("sector")
         nombre = request.form.get("nombre_organizador")
-        email = escape(request.form.get("email-organizador"))
+        email = request.form.get("email-organizador")
         celular = request.form.get("celu-organizador")
         dia_hora_inicio = request.form.get("dia-hora-inicio")
         dia_hora_termino = request.form.get("dia-hora-termino")
-        descripcion = escape(request.form.get("descripcion-actividad"))
+        descripcion = request.form.get("descripcion-actividad")
 
         # ---Validaciones---
         errores = []
@@ -172,12 +176,12 @@ def agregar():
 
         #Guardar contactos
         contactos = [
-            ("whatsapp", escape(request.form.get("whatsapp-id"))),
-            ("instagram", escape(request.form.get("instagram-id"))),
-            ("telegram", escape(request.form.get("telegram-id"))),
-            ("x", escape(request.form.get("x-id"))),
-            ("tiktok", escape(request.form.get("tiktok-id"))),
-            ("otra", escape(request.form.get("otra-id"))),
+            ("whatsapp", request.form.get("whatsapp-id")),
+            ("instagram", request.form.get("instagram-id")),
+            ("telegram", request.form.get("telegram-id")),
+            ("x", request.form.get("x-id")),
+            ("tiktok", request.form.get("tiktok-id")),
+            ("otra", request.form.get("otra-id"))
         ]
         for nombre_contacto, identificador in contactos:
             if identificador and identificador.strip():
