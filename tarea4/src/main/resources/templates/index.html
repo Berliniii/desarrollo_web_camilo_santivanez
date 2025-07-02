@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Notas de Actividades</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <script th:src="@{/js/index.js}" defer></script>
+</head>
+<body>
+    <div th:replace="~{fragments/nav :: navbar}"></div>
+
+    <h2>Actividades Realizadas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha de Inicio</th>
+                <th>Sector</th>
+                <th>Nombre</th>
+                <th>Tema</th>
+                <th>Nota</th>
+                <th>Evaluar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="actividad : ${actividades}">
+                <td th:text="${actividad.id}"></td>
+                <td th:text="${#temporals.format(actividad.diaHoraInicio, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${actividad.sector}"></td>
+                <td th:text="${actividad.nombre}"></td>
+                <td th:text="${actividad.tema}"></td>
+                <td th:text="${actividad.notaPromedio != null ? actividad.notaPromedio : '-'}"></td>
+                <td>
+                    <button type="button"
+                        th:attr="data-id=${actividad.id}"
+                        class="evaluar-btn">
+                        Evaluar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
